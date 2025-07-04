@@ -1,15 +1,22 @@
-version: '3.5'
 
 services:
   bindwebmin:
     build: .
     restart: always
+    container_name: "bind9"
     volumes:
       - ./data:/data
     ports:
       - 53:53/tcp
       - 53:53/udp
       - 10000:10000
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
     environment:
       - ROOT_PASSWORD=password
       - WEBMIN_ENABLED=true
+    networks:
+      - l0n0l_internal
+networks:
+  l0n0l_internal:
+    driver: bridge
